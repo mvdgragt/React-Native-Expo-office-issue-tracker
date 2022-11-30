@@ -1,19 +1,36 @@
 import React, { useState, useEffect } from "react";
-import { FAB } from "react-native-paper";
-import { SafeAreaView, StyleSheet, View, Text } from "react-native";
-import ListItems from "../components/listItems";
-import Modal from "react-native-modal";
-import Form from "../components/form/form";
-import Header from "../components/Header";
+import { Card, Button, Paragraph, Text } from "react-native-paper";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 
-const ChosenTodo = ({ navigation, GlobalState }) => {
-  const { chosenTodo } = GlobalState;
+const ChosenTodo = ({ navigation, GlobalState, deleteTodo }) => {
+  const { chosenTodo, todo, setTodo,hej } = GlobalState;
+  const image = chosenTodo.image;
+  const deleteItem= () => {
+    navigation.navigate('Home')
+    console.log("item description: ", chosenTodo.description)
+  };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-           <Text>{chosenTodo.category}</Text>
-           <Text>{chosenTodo.description}</Text>
-           <Text>{chosenTodo.image}</Text>
+    <SafeAreaView style={{ flex: 1, margin: 20, marginTop: 100,
+     alignContent: "center" }}>
+      <Card>
+        <Card.Content>
+          <Card.Cover source={{ uri: image }} />
+          <Text variant="titleLarge">{chosenTodo.category}</Text>
+
+          <Text variant="bodyLarge">{chosenTodo.description}</Text>
+
+          <Card.Actions>
+            <Button 
+            onPress={() => navigation.navigate('Home')}
+            >Back</Button>
+            <Button onPress={deleteItem}
+             hej
+            >Delete</Button>
+
+          </Card.Actions>
+        </Card.Content>
+      </Card>
     </SafeAreaView>
   );
 };

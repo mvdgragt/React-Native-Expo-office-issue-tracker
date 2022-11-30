@@ -18,25 +18,33 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mvdgragtexpo.maintananceapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#000000"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/images/icon.png"
     },
-      "plugins": [
-        [
-          "expo-image-picker",
-          {
-            "photosPermission": "The app accesses your photos to let you share them with your friends."
-          }
-        ]
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
       ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "1bda60ab-d09c-45de-8fa6-42bf60203700"
+      }
     }
   }
-
+}
