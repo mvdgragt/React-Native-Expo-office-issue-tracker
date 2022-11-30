@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Card, Button, Paragraph, Text } from "react-native-paper";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 
-const ChosenTodo = ({ navigation, GlobalState, deleteTodo }) => {
-  const { chosenTodo, todo, setTodo,hej } = GlobalState;
+const ChosenTodo = ({ navigation, GlobalState }) => {
+  const { chosenTodo, deleteTodo } = GlobalState;
   const image = chosenTodo.image;
   const deleteItem= () => {
+    alert(chosenTodo.description)
+    deleteTodo(chosenTodo.description)
     navigation.navigate('Home')
-    console.log("item description: ", chosenTodo.description)
   };
 
   return (
@@ -25,7 +26,6 @@ const ChosenTodo = ({ navigation, GlobalState, deleteTodo }) => {
             onPress={() => navigation.navigate('Home')}
             >Back</Button>
             <Button onPress={deleteItem}
-             hej
             >Delete</Button>
 
           </Card.Actions>

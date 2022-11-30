@@ -15,6 +15,7 @@ const Home = ({ GlobalState, navigation }) => {
     data,
     chosenTodo,
     setChosenTodo,
+    deleteTodo
   } = GlobalState;
 
   const handleClose = () => setModalVisible(false);
@@ -50,6 +51,7 @@ const Home = ({ GlobalState, navigation }) => {
           <ListItems
             data={todo}
             handleTodo={handleTodo}
+            deleteTodo={deleteTodo}
             chosenTodo={chosenTodo}
             setChosenTodo={setChosenTodo}
             navigation={navigation}

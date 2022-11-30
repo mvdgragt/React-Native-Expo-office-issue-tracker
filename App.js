@@ -20,11 +20,18 @@ const App = () => {
     { key: "Övrigt", value: "Övrigt" },
   ];
 
+  const deleteTodo = description => {
+    setTodo(prevTodos => {
+      return prevTodos.filter(todo => todo.description != description)
+    })
+  }
+
   const GlobalState = {
     modalVisible, setModalVisible,
     todo, setTodo,
     chosenTodo,setChosenTodo,
     resultData,setResultData,
+    deleteTodo,
     data
   }
 
