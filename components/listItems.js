@@ -2,7 +2,7 @@ import * as React from "react";
 import { StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { List, Avatar } from "react-native-paper";
 
-const ListItems = ({ data, handleTodo, chosenTodo, setChosenTodo, navigation }) => {
+const ListItems = ({ data, handleTodo, chosenTodo, setChosenTodo, navigation, onUpdate, setOnUpdate}) => {
 
   return (
     <FlatList
@@ -13,7 +13,6 @@ const ListItems = ({ data, handleTodo, chosenTodo, setChosenTodo, navigation }) 
           <TouchableOpacity
             onPress={() => {
               setChosenTodo(item);
-              console.log(chosenTodo)
               navigation.navigate('ChosenTodo')
             }}
           >

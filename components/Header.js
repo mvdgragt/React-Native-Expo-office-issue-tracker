@@ -4,7 +4,8 @@ import Constants from "expo-constants";
 export default function Header() {
   return (
     <View style={styles.header}>
-      <Text style={styles.text}>Office Issue Tracker</Text>
+<Image source={require('../assets/images/knowitCircle.png')}   style={{ width: 100, height: 100 }}/>
+      <Text style={styles.text}>Att göra</Text>
     </View>
   );
 }
@@ -15,8 +16,8 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     // justifyContent: 'center',
-    backgroundColor: "white",
-    paddingTop: Constants.statusBarHeight,
+    backgroundColor: "#e4e1da",
+    paddingTop: 10,
     paddingBottom: 20,
     marginBottom: 20,
     shadowColor: "#000",
@@ -30,8 +31,9 @@ const styles = StyleSheet.create({
     zIndex: 5,
   },
   text: {
-    fontSize: 18,
-    fontWeight: "900",
+    fontSize: 25,
+    fontWeight: "500",
     color: "#141414",
+    paddingTop: 10,
   },
 });

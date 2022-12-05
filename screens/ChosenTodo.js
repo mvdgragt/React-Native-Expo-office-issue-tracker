@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Card, Button, Paragraph, Text } from "react-native-paper";
 import { SafeAreaView, StyleSheet, View } from "react-native";
+import { getDocs, addDoc, deleteDoc, doc
+} from 'firebase/firestore';
+import { db } from "../config";
+
 
 const ChosenTodo = ({ navigation, GlobalState }) => {
-  const { chosenTodo, deleteTodo } = GlobalState;
+  const { chosenTodo, deleteTodo, setOnUpdate, onUpdate } = GlobalState;
   const image = chosenTodo.image;
+
+  const docRef = doc(db, 'todos', chosenTodo.id)
+
   const deleteItem= () => {
-    alert(chosenTodo.description)
-    deleteTodo(chosenTodo.description)
+    setOnUpdate(!onUpdate);
+    deleteDoc(docRef)
     navigation.navigate('Home')
   };
 
@@ -24,9 +31,9 @@ const ChosenTodo = ({ navigation, GlobalState }) => {
           <Card.Actions>
             <Button 
             onPress={() => navigation.navigate('Home')}
-            >Back</Button>
+            >Tillbaka</Button>
             <Button onPress={deleteItem}
-            >Delete</Button>
+            >Löst</Button>
 
           </Card.Actions>
         </Card.Content>

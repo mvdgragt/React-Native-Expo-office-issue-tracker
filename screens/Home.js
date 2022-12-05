@@ -5,6 +5,8 @@ import ListItems from "../components/listItems";
 import Modal from "react-native-modal";
 import Form from "../components/form/form";
 import Header from "../components/Header";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../config";
 
 const Home = ({ GlobalState, navigation }) => {
   const {
@@ -15,24 +17,31 @@ const Home = ({ GlobalState, navigation }) => {
     data,
     chosenTodo,
     setChosenTodo,
-    deleteTodo
+    onUpdate,
+    setOnUpdate,
+    deleteTodo,
+    addTodo,
   } = GlobalState;
 
   const handleClose = () => setModalVisible(false);
   const handleTodo = (item) => setChosenTodo(item);
 
+  const fetchPost = async () => {
+    await getDocs(collection(db, "todos")).then((querySnapshot) => {
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setTodo(newData);
+    });
+  };
+
   useEffect(() => {
-    setTodo([
-      {
-        category: "First Item",
-        description: "description item 1",
-        image: "https://robohash.org/tim",
-      },
-    ]);
-  }, []);
+    fetchPost();
+  }, [onUpdate]);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#e4e1da" }}>
       {modalVisible ? (
         <Modal
           animationType="fade"
@@ -41,7 +50,14 @@ const Home = ({ GlobalState, navigation }) => {
           onBackdropPress={() => setModalVisible(false)}
         >
           <View style={styles.modalView}>
-            <Form data={data} handleClose={handleClose} setTodo={setTodo} />
+            <Form
+              data={data}
+              handleClose={handleClose}
+              setTodo={setTodo}
+              addTodo={addTodo}
+              onUpdate={onUpdate}
+              setOnUpdate={setOnUpdate}
+            />
           </View>
         </Modal>
       ) : (
@@ -54,6 +70,8 @@ const Home = ({ GlobalState, navigation }) => {
             deleteTodo={deleteTodo}
             chosenTodo={chosenTodo}
             setChosenTodo={setChosenTodo}
+            onUpdate={onUpdate}
+            setOnUpdate={setOnUpdate}
             navigation={navigation}
           />
           <View style={styles.bottomView}>
@@ -61,7 +79,7 @@ const Home = ({ GlobalState, navigation }) => {
               style={styles.fab}
               animated="true"
               mode="elevated"
-              label="New Item"
+              label="Ny Uppgift"
               icon="plus"
               onPress={() => setModalVisible(true)}
             />
