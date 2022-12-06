@@ -1,4 +1,11 @@
 import React, { useState } from "react";
+import { Formik } from "formik";
+import { TextInput, List, Button } from "react-native-paper";
+import SelectList from "react-native-dropdown-select-list";
+import * as ImagePicker from "expo-image-picker";
+import { colRef } from "../../config";
+import { getStorage } from "firebase/storage";
+import { getDocs, addDoc, serverTimestamp } from "firebase/firestore";
 import {
   View,
   StyleSheet,
@@ -8,45 +15,33 @@ import {
   Image,
   Alert,
 } from "react-native";
-import { Formik } from "formik";
-import { TextInput, List, Button, Avatar, Snackbar } from "react-native-paper";
-import SelectList from "react-native-dropdown-select-list";
-import * as ImagePicker from "expo-image-picker";
-import { colRef } from "../../config";
-import { getDocs, addDoc, deleteDoc, doc
-} from 'firebase/firestore';
 
-// import { getData } from "../../firebase-config";
-
-
-const Form = ({ data, setTodo, handleClose, addTodo, onUpdate, setOnUpdate }) => {
-  const [description, setDescription] = useState("");
+const Form = ({ data, handleClose, onUpdate, setOnUpdate }) => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [image, setImage] = useState(null);
-  const [modalVisible, setModalVisible] = useState("");
-  const [bytes, setBytes] = useState("");
-  const [uploading, setUploading] = useState(false);
-
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const dateStamp = [year, month, day].join("-");
   const value = selectedCategory;
-  // const [type, setType] = useState(CameraType.back);
-  // const [permission, requestPermission] = Camera.useCameraPermissions();
-  // console.log(todo);
-const uploadImage = async() => {
-  setUploading(true);
-  const response = fetch(image.uri)
-  const blob = await (await response).blob();
-  const filename = image.uri.substring(image.uri.lastIndexof('/') + 1);
-  var ref = firebase.storage().ref().child(filename).put(blob);
 
-  try {
-    await ref;
-  } catch (error) {
-    console.log(error)
-  }
-  setUploading(false)
-  Alert.alert('photo uploading...')
-  setImage(null);
-}
+  const uploadImage = async () => {
+    setUploading(true);
+    const response = fetch(image.uri);
+    const blob = await (await response).blob();
+    const filename = image.uri.substring(image.uri.lastIndexof("/") + 1);
+    var ref = firebase.storage().ref().child(filename).put(blob);
+
+    try {
+      await ref;
+    } catch (error) {
+      console.log(error);
+    }
+    setUploading(false);
+    Alert.alert("photo uploading...");
+    setImage(null);
+  };
 
   const pickImageAsync = async (handleChange) => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -62,34 +57,23 @@ const uploadImage = async() => {
       const ref = ref(storage, "image.jpg");
       //convert inage to array of bytes
       const img = await fetch(result.assets[0].uri);
-      const bytes = await img.blob();
+      // const bytes = await img.blob();
       uploadBytes(ref, result.bytes);
     }
   };
 
   getDocs(colRef)
-.then((snapshot) => {
-    // console.log(snapshot.docs)
-  let todos = []
-  snapshot.docs.forEach( (doc) => {
-    todos.push({ ...doc.data(), id: doc.id })
-  })
-  console.log(todos)
-  })
-  .catch(err => {
-    console.error(err.message)
-  })
-
-  // const __startCamera = async (handleChange) => {
-  //   const { status } = await Camera.requestCameraPermissionsAsync();
-  //   if (status === "granted") {
-  //     console.log("start the camera");
-  //     handleChange(result.uri);
-  //     setStartCamera(true);
-  //   } else {
-  //     Alert.alert("Access denied");
-  //   }
-  // };
+    .then((snapshot) => {
+      // console.log(snapshot.docs)
+      let todos = [];
+      snapshot.docs.forEach((doc) => {
+        todos.push({ ...doc.data(), id: doc.id });
+      });
+      console.log(todos);
+    })
+    .catch((err) => {
+      console.error(err.message);
+    });
 
   const HideKeyboard = ({ children }) => (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -97,16 +81,21 @@ const uploadImage = async() => {
     </TouchableWithoutFeedback>
   );
 
-
   return (
     <Formik
-      initialValues={{ category: "", description: "", image: "", bytes: "" }}
+      initialValues={{
+        category: "",
+        description: "",
+        image: "",
+        bytes: "",
+        date: dateStamp,
+        createdAt: serverTimestamp(),
+      }}
       onSubmit={(values, { setSubmitting }) => {
         setSubmitting(true);
-        addDoc(colRef, values)
+        addDoc(colRef, values);
         handleClose();
         setOnUpdate(!onUpdate);
-
       }}
     >
       {({ handleChange, handleSubmit, values, setFieldValue }) => (
@@ -135,7 +124,6 @@ const uploadImage = async() => {
                 mode="outlined"
                 label="Description"
                 style={styles.description}
-                // onChangeText={setDescription}
                 onChangeText={handleChange("description")}
                 value={values.description}
               />
@@ -167,6 +155,8 @@ const uploadImage = async() => {
               mode="outlined"
               style={styles.secondary}
               // onPress={__startCamera}
+              // onPress={Camera_3}
+              // onPress={cameraRequestPermission}
             >
               Kamera
             </Button>
@@ -179,7 +169,6 @@ const uploadImage = async() => {
             <List.Item
               name="image"
               style={styles.listItem}
-              // title={selectedCategory.value}
               title={selectedCategory}
               description={values.description}
               right={() => (
@@ -193,10 +182,7 @@ const uploadImage = async() => {
 
           <Button
             style={styles.submitButton}
-            // onPress={(event) => props.onPress((event.target.value = false))}
-            // onPress={handleSubmit}
             onPress={() => {
-              // handleSaveTask();
               handleSubmit();
               {
                 uploadImage;
@@ -212,8 +198,6 @@ const uploadImage = async() => {
 };
 
 export default Form;
-
-const width_proportion = "45%";
 
 const styles = StyleSheet.create({
   description: {

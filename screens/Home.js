@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { FAB } from "react-native-paper";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import ListItems from "../components/listItems";
@@ -19,8 +19,6 @@ const Home = ({ GlobalState, navigation }) => {
     setChosenTodo,
     onUpdate,
     setOnUpdate,
-    deleteTodo,
-    addTodo,
   } = GlobalState;
 
   const handleClose = () => setModalVisible(false);
@@ -54,7 +52,6 @@ const Home = ({ GlobalState, navigation }) => {
               data={data}
               handleClose={handleClose}
               setTodo={setTodo}
-              addTodo={addTodo}
               onUpdate={onUpdate}
               setOnUpdate={setOnUpdate}
             />
@@ -67,7 +64,6 @@ const Home = ({ GlobalState, navigation }) => {
           <ListItems
             data={todo}
             handleTodo={handleTodo}
-            deleteTodo={deleteTodo}
             chosenTodo={chosenTodo}
             setChosenTodo={setChosenTodo}
             onUpdate={onUpdate}

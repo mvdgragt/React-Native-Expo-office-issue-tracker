@@ -37,7 +37,8 @@
     "react-native-safe-area-context": "4.4.1",
     "react-native-screens": "~3.18.0",
     "react-native-sticky-parallax-header": "^0.4.2",
-    "react-native-web": "~0.18.7"
+    "react-native-web": "~0.18.7",
+    "expo-camera": "~13.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",

@@ -1,9 +1,8 @@
 import * as React from "react";
 import { StyleSheet, FlatList, TouchableOpacity } from "react-native";
-import { List, Avatar } from "react-native-paper";
+import { List, Avatar, Text } from "react-native-paper";
 
-const ListItems = ({ data, handleTodo, chosenTodo, setChosenTodo, navigation, onUpdate, setOnUpdate}) => {
-
+const ListItems = ({ data, setChosenTodo, navigation }) => {
   return (
     <FlatList
       keyExtractor={(item) => item.image}
@@ -13,19 +12,22 @@ const ListItems = ({ data, handleTodo, chosenTodo, setChosenTodo, navigation, on
           <TouchableOpacity
             onPress={() => {
               setChosenTodo(item);
-              navigation.navigate('ChosenTodo')
+              navigation.navigate("ChosenTodo");
             }}
           >
             <List.Item
               style={styles.listItem}
               title={item.category}
               description={item.description}
-              left={(props) => (
+              left={() => (
                 <Avatar.Image
                   style={{ alignSelf: "center" }}
                   size={50}
                   source={{ uri: `${item.image}` }}
                 />
+              )}
+              right={() => (
+                <Text style={{ paddingTop: 10 }}>{item.date}</Text>
               )}
             />
           </TouchableOpacity>

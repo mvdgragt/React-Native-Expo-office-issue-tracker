@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { collection, getDocs, getFirestore
+import { collection, getDocs, getFirestore, query, orderBy
 } from 'firebase/firestore';
-
+// import { getStorage } from "firebase/storage"
 
 const firebaseConfig = {
   apiKey: "AIzaSyAucJQRFAOgoceiGg-D83CIG73XvQWEVEI",
@@ -18,9 +18,15 @@ const app = initializeApp(firebaseConfig);
 
 // init services
 export const db = getFirestore(app);
+// const storage = getStorage();
+// const storageRef = ref(storage);
+
+// const imageRef = ref(storage, 'images');
+// const sparkyRef = ref(storage, 'images/sparky.jpg');
 
 // collection ref
 export const colRef = collection(db, 'todos')
 
-//  get collection data
+// queries
+// const q = query(colRef, orderBy('', 'createdAt'))
 
